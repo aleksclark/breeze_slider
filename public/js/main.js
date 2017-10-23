@@ -42,7 +42,6 @@ $( document ).ready(function() {
       if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         events = JSON.parse(xhr.responseText);
         events = _.sortedUniqBy(events, function(ev) { return ev.name; });
-        console.log(events);
         renderEvents(events);
       }
     };
@@ -119,7 +118,12 @@ $( document ).ready(function() {
 
   }
 
+  function reloadPage() {
+    location.reload(true);
+  }
+
   loadEvents();
+  setTimeout(reloadPage, 600000);
 
 
 

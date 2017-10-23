@@ -14,6 +14,8 @@ require 'icalendar'
 config_file 'config.yml'
 
 class SliderApp < Sinatra::Application
+  @@cached_events = nil
+  @@cache_time = nil
 
   API_METHODS =
     %w(
@@ -49,32 +51,50 @@ class SliderApp < Sinatra::Application
   end
 
   get '/events' do
-    json generate_events.values
+    json cached_events.values
   end
 
   get '/' do
     send_file File.join(settings.public_folder, 'index.html')
   end
 
+  def cached_events
+    if @@cached_events && (Time.now < (@@cache_time + 600))
+      @@cached_events
+    else
+      @@cache_time = Time.now
+      @@cached_events = generate_events
+    end
+  end
+
   def generate_events
     resp = Faraday.get settings.ical_urls[0]
     cal = Icalendar::Calendar.parse(resp.body).first
-    params = {
-      start: Date.today.strftime,
-      end:   (Date.today + 30).strftime
-    }
+    # params = {
+    #   start: Date.today.strftime,
+    #   end:   (Date.today + 30).strftime
+    # }
 
     cal_events = {}
     cal.events.each {|e| cal_events[e.uid] = e}
 
-    api_events = {}
-    api_get('/api/events', params).each {|e| api_events[gen_uid(e)] = e}
+    # api_events = {}
+    # api_get('/api/events', params).each {|e| api_events[gen_uid(e)] = e}
 
     combined_events = {}
-    (cal_events.keys & api_events.keys).each do |key|
-      combined_events[key] = api_events[key]
-      combined_events[key]['description'] = cal_events[key].description
+    cal_events.values.each do |ev|
+      combined_events[ev.uid] = {
+        description: ev.description,
+        name: ev.summary,
+        start_datetime: ev.dtstart,
+      }
     end
+
+    # combined_events = {}
+    # (cal_events.keys & api_events.keys).each do |key|
+    #   combined_events[key] = api_events[key]
+    #   combined_events[key]['description'] = cal_events[key].description
+    # end
 
     combined_events
   end

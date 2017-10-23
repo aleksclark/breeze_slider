@@ -19,7 +19,6 @@ GEM
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
-    rbczmq (1.7.9)
     sinatra (2.0.0)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -41,7 +40,6 @@ DEPENDENCIES
   faraday
   icalendar
   iruby
-  rbczmq
   sinatra
   sinatra-contrib
 

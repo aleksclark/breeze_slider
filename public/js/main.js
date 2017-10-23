@@ -63,17 +63,17 @@ $( document ).ready(function() {
     var el = jQuery.parseHTML(eventTemplate);
 
     var eventTime = new Date(event.start_datetime);
-    var hours = eventTime.getHours();
+    var hours = eventTime.getUTCHours();
     var pm = false;
     if (hours > 12 ) {
       pm = true;
       hours = hours - 12;
     }
 
-    var formattedTime = dayNames[eventTime.getDay()]
-      + ' ' + monthNames[eventTime.getMonth()]
-      + ' ' + eventTime.getDate()
-      + ' ' + hours + ':' + ("00" +  eventTime.getMinutes()).slice(-2);
+    var formattedTime = dayNames[eventTime.getUTCDay()]
+      + ' ' + monthNames[eventTime.getUTCMonth()]
+      + ' ' + eventTime.getUTCDate()
+      + ' ' + hours + ':' + ("00" +  eventTime.getUTCMinutes()).slice(-2);
 
     if (pm) {
       formattedTime += ' PM';

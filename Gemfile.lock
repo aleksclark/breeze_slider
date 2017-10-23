@@ -1,0 +1,49 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    backports (3.10.0)
+    bond (0.5.1)
+    data_uri (0.1.0)
+    faraday (0.13.1)
+      multipart-post (>= 1.2, < 3)
+    icalendar (2.4.1)
+    iruby (0.3)
+      bond (~> 0.5)
+      data_uri (~> 0.1)
+      mimemagic (~> 0.3)
+      multi_json (~> 1.11)
+    mimemagic (0.3.2)
+    multi_json (1.12.2)
+    multipart-post (2.0.0)
+    mustermann (1.0.1)
+    rack (2.0.3)
+    rack-protection (2.0.0)
+      rack
+    rbczmq (1.7.9)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
+    sinatra-contrib (2.0.0)
+      backports (>= 2.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.0.0)
+      sinatra (= 2.0.0)
+      tilt (>= 1.3, < 3)
+    tilt (2.0.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  faraday
+  icalendar
+  iruby
+  rbczmq
+  sinatra
+  sinatra-contrib
+
+BUNDLED WITH
+   1.15.4

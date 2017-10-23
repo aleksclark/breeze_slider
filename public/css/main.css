@@ -14,6 +14,9 @@ html {
     color: #222;
     font-size: 1em;
     line-height: 1.4;
+    height:100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 /*
@@ -98,26 +101,145 @@ textarea {
    ========================================================================== */
 
 body {
- background: #111;
+ background: #000;
+ height: 100%;
+ width: 100%;
+ display: flex;
+ overflow: hidden;
 }
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
+
+#slideshow {
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
-li {
+
+.invited {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-image: url("../img/bg_01.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  justify-content: space-around;
+  align-items: center;
   position: absolute;
-  left: 50%;
-  margin-left: -247px;
-  margin-top: 3%;
-  color:#fff;
-  font-size: 30px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
-img{
-  border: 1px solid #000;
-  border-radius: 3px;
-  box-shadow: 0 0 5px 0 hsla(0,0%,30%, .3);
+
+.invited-banner {
+  background-color: #b5ac8e;
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-size: 10rem;
+  color: #fff;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin-top: 300px;
+}
+
+.logo {
+  background-image: url("../img/nhc_logo_all_white.png");
+  height: 300px;
+  width:600px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.event {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-image: url("../img/bg_01.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.event.event-1 {
+  background-image: url("../img/bg_02.jpg");
+  align-items: left;
+}
+
+.event .logo {
+  position: absolute;
+  bottom: 5rem;
+  right: 5rem;
+  height: 100px;
+  width:300px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 3rem;
+}
+
+.event-1 .card {
+  background-color: #bfbfbf;
+}
+
+.event-1 .card-header {
+  background-color: #398f46;
+}
+
+.card-title {
+  color: #fff;
+  font-size: 7rem;
+  font-family: 'Source Serif Pro', serif;
+  font-style: bold;
+}
+
+.next-meeting {
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: #bfbfbf;
+}
+
+.meeting-time {
+  font-family: 'Lato', sans-serif;
+  font-size: 3rem;
+  color: #15272a;
+}
+
+.card-body {
+  font-family: 'Source Serif Pro', serif;
+  color: #15272a;
+  padding: 3rem;
+  font-size: 1.5rem;
+}
+
+.event-2 .card {
+  background-color: #b5ac8e;
+}
+
+.event-2 .card-header {
+  background-color: #7c5138;
+}
+
+.event.event-2 {
+  align-items: flex-end;
+  background-image: url("../img/bg_03.jpg");
+}
+
+.event.event-2 .logo {
+  left: 5rem;
 }
 
 .active {
@@ -150,14 +272,6 @@ img{
     opacity: 0;
   }
 }
-
-
-
-
-
-
-
-
 
 
 

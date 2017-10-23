@@ -5,6 +5,7 @@ require 'sinatra/json'
 require 'sinatra/config_file'
 require 'faraday'
 require 'yaml'
+require 'icalendar'
 
 # required keys:
 # api_key - api key for breeze chms
@@ -46,16 +47,38 @@ before do
 end
 
 get '/events' do
-  params = {
-    start: '2017-9-1',
-    end:   '2017-9-31'
-  }
-  json api_get('/api/events', params)
+  json generate_events.values
 end
 
 get '/' do
   send_file File.join(settings.public_folder, 'index.html')
 end
 
+def generate_events
+  resp = Faraday.get settings.ical_urls[0]
+  cal = Icalendar::Calendar.parse(resp.body).first
+  params = {
+    start: Date.today.strftime,
+    end:   (Date.today + 30).strftime
+  }
 
+  cal_events = {}
+  cal.events.each {|e| cal_events[e.uid] = e}
 
+  api_events = {}
+  api_get('/api/events', params).each {|e| api_events[gen_uid(e)] = e}
+
+  combined_events = {}
+  (cal_events.keys & api_events.keys).each do |key|
+    combined_events[key] = api_events[key]
+    combined_events[key]['description'] = cal_events[key].description
+  end
+
+  combined_events
+end
+
+def gen_uid(event)
+  dt = DateTime.parse(event['start_datetime'])
+  fmttime = dt.strftime('%Y%m%dT%H%M%S')
+  fmttime + 'ZPID' + event['id'] + '@newheightschapel.breezechms.com'
+end

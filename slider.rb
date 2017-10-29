@@ -93,7 +93,11 @@ class SliderApp < Sinatra::Application
     combined_events = {}
     (cal_events.keys & api_events.keys).each do |key|
       combined_events[key] = api_events[key]
-      combined_events[key]['description'] = cal_events[key].description
+      fmt_description = cal_events[key].description
+      if fmt_description.is_a? Icalendar::Values::Array
+        fmt_description = fmt_description.join('')
+      end
+      combined_events[key]['description'] = fmt_description
       combined_events[key]['start_datetime'] = cal_events[key].dtstart
     end
 

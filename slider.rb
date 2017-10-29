@@ -51,7 +51,7 @@ class SliderApp < Sinatra::Application
   end
 
   get '/events' do
-    json cached_events.values
+    json generate_events
   end
 
   get '/' do
@@ -70,33 +70,34 @@ class SliderApp < Sinatra::Application
   def generate_events
     resp = Faraday.get settings.ical_urls[0]
     cal = Icalendar::Calendar.parse(resp.body).first
-    # params = {
-    #   start: Date.today.strftime,
-    #   end:   (Date.today + 30).strftime
-    # }
+    params = {
+      start: Date.today.strftime,
+      end:   (Date.today + 30).strftime
+    }
 
     cal_events = {}
     cal.events.each {|e| cal_events[e.uid] = e}
 
-    # api_events = {}
-    # api_get('/api/events', params).each {|e| api_events[gen_uid(e)] = e}
-
-    combined_events = {}
-    cal_events.values.each do |ev|
-      combined_events[ev.uid] = {
-        description: ev.description,
-        name: ev.summary,
-        start_datetime: ev.dtstart,
-      }
-    end
+    api_events = {}
+    api_get('/api/events', params).each {|e| api_events[gen_uid(e)] = e}
 
     # combined_events = {}
-    # (cal_events.keys & api_events.keys).each do |key|
-    #   combined_events[key] = api_events[key]
-    #   combined_events[key]['description'] = cal_events[key].description
+    # cal_events.values.each do |ev|
+    #   combined_events[ev.uid] = {
+    #     description: ev.description,
+    #     name: ev.summary,
+    #     start_datetime: ev.dtstart,
+    #   }
     # end
 
-    combined_events
+    combined_events = {}
+    (cal_events.keys & api_events.keys).each do |key|
+      combined_events[key] = api_events[key]
+      combined_events[key]['description'] = cal_events[key].description
+      combined_events[key]['start_datetime'] = cal_events[key].dtstart
+    end
+
+    combined_events.values.sort_by {|ev| ev['start_datetime']}
   end
 
   def gen_uid(event)

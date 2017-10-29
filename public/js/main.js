@@ -40,17 +40,19 @@ $( document ).ready(function() {
     xhr.open(method, url, true);
     xhr.onreadystatechange = function () {
       if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        events = JSON.parse(xhr.responseText);
-        events = _.sortedUniqBy(events, function(ev) { return ev.name; });
+        var loadEvents = JSON.parse(xhr.responseText);
+        events = _.uniqBy(loadEvents, function(ev) {
+            return ev['name'];
+        });
         renderEvents(events);
       }
     };
     xhr.send();
   }
 
-  function renderEvents(events) {
-    for (var i = events.length - 1; i >= 0; i--) {
-      var event = events[i];
+  function renderEvents(loadEvents) {
+    for (var i = loadEvents.length - 1; i >= 0; i--) {
+      var event = loadEvents[i];
       var eventEl = elementFromEvent(event, i);
       $(eventEl).addClass(eventStyles[i % (eventStyles.length)]);
       $('#slideshow').append(eventEl);

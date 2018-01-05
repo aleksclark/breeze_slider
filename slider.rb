@@ -99,6 +99,11 @@ class SliderApp < Sinatra::Application
       end
       combined_events[key]['description'] = fmt_description
       combined_events[key]['start_datetime'] = cal_events[key].dtstart
+      combined_events[key].each_pair do |k, v|
+        if v.is_a?(String) || v.is_a?(Icalendar::Values::Text)
+          combined_events[key][k] = v.to_s.force_encoding(Encoding::UTF_8)
+        end
+      end
     end
 
     combined_events.values.sort_by {|ev| ev['start_datetime']}

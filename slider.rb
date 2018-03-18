@@ -51,7 +51,7 @@ class SliderApp < Sinatra::Application
   end
 
   get '/events' do
-    json generate_events
+    json cached_events
   end
 
   get '/' do
